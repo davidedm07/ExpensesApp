@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Personal Expenses',
+      // themeMode: ThemeMode.dark,
       theme: ThemeData(
+          // brightness: Brightness.dark,
           primarySwatch: Colors.green,
           accentColor: Colors.blue,
           fontFamily: 'Quicksand',
@@ -45,8 +47,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
