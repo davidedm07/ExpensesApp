@@ -24,7 +24,7 @@ Through the 2 plus button you can enter a new transaction.
 <br>
 <br>
 
-![Homepage](screenshots\ExpensesApp_homepage.PNG)
+![Homepage](/screenshots/ExpensesApp_homepage.PNG)
 
 ## Add Transaction
 
@@ -35,7 +35,7 @@ Probably the next projects will be more refined, if not I will start my own proj
 <br>
 <br>
 
-![Add Transaction](screenshots\ExpensesApp_new_transaction.PNG)
+![Add Transaction](/screenshots/ExpensesApp_new_transaction.PNG)
 
 ## Homepage With Transaction
 
@@ -47,4 +47,4 @@ It's possible to remvoe the transaction through the bin button.
 <br>
 <br>
 
-![Homepage](screenshots\ExpensesApp_homepage_with_transaction.PNG)
+![Homepage_With_Transaction](/screenshots/ExpensesApp_homepage_with_transaction.PNG)
