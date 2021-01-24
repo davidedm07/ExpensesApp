@@ -51,6 +51,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
@@ -117,13 +118,33 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: (height - appBar.preferredSize.height - topPadding) * 0.3,
-              child: Chart(_recentTransactions),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Show Chart'),
+                Switch(
+                  value: _showChart,
+                  activeColor: Colors.green,
+                  inactiveTrackColor: Colors.grey,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  },
+                ),
+              ],
             ),
-            Container(
-                height: (height - appBar.preferredSize.height) * 0.7,
-                child: TransactionList(_userTransactions, _deleteTransaction)),
+            _showChart
+                ? Container(
+                    height:
+                        (height - appBar.preferredSize.height - topPadding) *
+                            0.3,
+                    child: Chart(_recentTransactions),
+                  )
+                : Container(
+                    height: (height - appBar.preferredSize.height) * 0.7,
+                    child:
+                        TransactionList(_userTransactions, _deleteTransaction)),
           ],
         ),
       ),
