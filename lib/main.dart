@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
@@ -100,29 +103,45 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-
-    final appBar = AppBar(
-      title: Text(
-        'Personal Expenses',
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        ),
-      ],
-    );
-
+    final isAndroid = Platform.isAndroid;
     final height = mediaQuery.size.height;
     final topPadding = mediaQuery.padding.top;
+
+    final appBarTitle = Text(
+      'Personal Expenses',
+      style: Theme.of(context).textTheme.headline6,
+    );
+
+    final PreferredSizeWidget appBar = isAndroid
+        ? AppBar(
+            title: appBarTitle,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              ),
+            ],
+          )
+        : CupertinoNavigationBar(
+            middle: appBarTitle,
+            backgroundColor: Theme.of(context).primaryColor,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _startAddNewTransaction(context),
+                ),
+              ],
+            ),
+          );
 
     final transactionListWidget = Container(
         height: (height - appBar.preferredSize.height) * 0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final scaffoldBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -130,8 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Show Chart'),
-                  Switch(
+                  Text(
+                    'Show Chart',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Switch.adaptive(
                     value: _showChart,
                     activeColor: Colors.green,
                     inactiveTrackColor: Colors.grey,
@@ -162,11 +184,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
     );
+
+    return isAndroid
+        ? Scaffold(
+            appBar: appBar,
+            body: scaffoldBody,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            ),
+          )
+        : CupertinoPageScaffold(
+            child: scaffoldBody,
+            navigationBar: appBar,
+          );
   }
 }
