@@ -56,10 +56,6 @@ class _NewTransactionState extends State<NewTransaction> {
   @override
   Widget build(BuildContext context) {
     final isAndroid = Platform.isAndroid;
-    final chooseDateButtonText = Text(
-      'Choose a date',
-      style: TextStyle(fontWeight: FontWeight.bold),
-    );
 
     return SingleChildScrollView(
       child: Card(
