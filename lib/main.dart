@@ -98,8 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: Text(
@@ -113,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    final height = MediaQuery.of(context).size.height;
-    final topPadding = MediaQuery.of(context).padding.top;
+    final height = mediaQuery.size.height;
+    final topPadding = mediaQuery.padding.top;
 
     final transactionListWidget = Container(
         height: (height - appBar.preferredSize.height) * 0.7,
