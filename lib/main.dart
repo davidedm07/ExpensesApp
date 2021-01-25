@@ -109,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final appBarTitle = Text(
       'Personal Expenses',
+      style: Theme.of(context).textTheme.headline6,
     );
 
     final PreferredSizeWidget appBar = isAndroid
@@ -123,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         : CupertinoNavigationBar(
             middle: appBarTitle,
+            backgroundColor: Theme.of(context).primaryColor,
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -138,43 +140,49 @@ class _MyHomePageState extends State<MyHomePage> {
         height: (height - appBar.preferredSize.height) * 0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
-    final scaffoldBody = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Show Chart'),
-                Switch.adaptive(
-                  value: _showChart,
-                  activeColor: Colors.green,
-                  inactiveTrackColor: Colors.grey,
-                  onChanged: (val) {
-                    setState(() {
-                      _showChart = val;
-                    });
-                  },
-                ),
-              ],
-            ),
-          if (!isLandscape)
-            Container(
-              height: (height - appBar.preferredSize.height - topPadding) * 0.3,
-              child: Chart(_recentTransactions),
-            ),
-          if (!isLandscape) transactionListWidget,
-          if (isLandscape)
-            _showChart
-                ? Container(
-                    height:
-                        (height - appBar.preferredSize.height - topPadding) *
-                            0.7,
-                    child: Chart(_recentTransactions),
-                  )
-                : transactionListWidget
-        ],
+    final scaffoldBody = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Show Chart',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Switch.adaptive(
+                    value: _showChart,
+                    activeColor: Colors.green,
+                    inactiveTrackColor: Colors.grey,
+                    onChanged: (val) {
+                      setState(() {
+                        _showChart = val;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            if (!isLandscape)
+              Container(
+                height:
+                    (height - appBar.preferredSize.height - topPadding) * 0.3,
+                child: Chart(_recentTransactions),
+              ),
+            if (!isLandscape) transactionListWidget,
+            if (isLandscape)
+              _showChart
+                  ? Container(
+                      height:
+                          (height - appBar.preferredSize.height - topPadding) *
+                              0.7,
+                      child: Chart(_recentTransactions),
+                    )
+                  : transactionListWidget
+          ],
+        ),
       ),
     );
 
