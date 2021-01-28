@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class AdaptiveFlatButton extends StatelessWidget {
-  Widget _child;
-  Function _onPressed;
+  final Widget _child;
+  final Function _onPressed;
 
   AdaptiveFlatButton(this._child, this._onPressed);
 

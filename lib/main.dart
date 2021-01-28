@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Personal Expenses',
-      // themeMode: ThemeMode.dark,
       theme: ThemeData(
-        // brightness: Brightness.dark,
         primarySwatch: Colors.green,
         accentColor: Colors.blue,
         fontFamily: 'Quicksand',
@@ -26,9 +24,15 @@ class MyApp extends StatelessWidget {
               headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 20,
+                color: Colors.white,
               ),
               button: TextStyle(color: Colors.white),
+              headline5: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -151,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Text(
                     'Show Chart',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                   Switch.adaptive(
                     value: _showChart,
