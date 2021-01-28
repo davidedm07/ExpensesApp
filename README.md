@@ -48,3 +48,12 @@ It's possible to remvoe the transaction through the bin button.
 <br>
 
 ![Homepage_With_Transaction](/screenshots/ExpensesApp_homepage_with_transaction.PNG)
+
+## Landscape orientation
+In landscape orientation the application displays a switch that allows the user to choose between the chart or the transaction list to improve the visibility given the reduced screen space.
+
+### Landscape - transactions list
+![Homepage_With_Transaction](/screenshots/ExpensesApp_landscape_transactions.PNG)
+
+### Landscape - Chart
+![Homepage_With_Transaction](/screenshots/ExpensesApp_landscape_show_chart.PNG)
