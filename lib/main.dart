@@ -50,8 +50,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  // String titleInput;
-  // String amountInput;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -103,13 +101,86 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Widget> _buildLandscapeContent(MediaQueryData mediaQuery,
+      PreferredSizeWidget appBar, Widget transactionListWidget) {
+    final height = mediaQuery.size.height;
+    final topPadding = mediaQuery.padding.top;
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Show Chart',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          Switch.adaptive(
+            value: _showChart,
+            activeColor: Colors.green,
+            inactiveTrackColor: Colors.grey,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (height - appBar.preferredSize.height - topPadding) * 0.7,
+              child: Chart(_recentTransactions),
+            )
+          : transactionListWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(MediaQueryData mediaQuery,
+      PreferredSizeWidget appBar, Widget transactionListWidget) {
+    final height = mediaQuery.size.height;
+    final topPadding = mediaQuery.padding.top;
+    return [
+      Container(
+        height: (height - appBar.preferredSize.height - topPadding) * 0.3,
+        child: Chart(_recentTransactions),
+      ),
+      transactionListWidget,
+    ];
+  }
+
+  PreferredSizeWidget buildAndroidAppBar(Text appBarTitle) {
+    return AppBar(
+      title: appBarTitle,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        ),
+      ],
+    );
+  }
+
+  CupertinoNavigationBar buildCupertinoAppBar(Text appBarTitle) {
+    return CupertinoNavigationBar(
+      middle: appBarTitle,
+      backgroundColor: Theme.of(context).primaryColor,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => _startAddNewTransaction(context),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final isAndroid = Platform.isAndroid;
     final height = mediaQuery.size.height;
-    final topPadding = mediaQuery.padding.top;
 
     final appBarTitle = Text(
       'Personal Expenses',
@@ -117,28 +188,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final PreferredSizeWidget appBar = isAndroid
-        ? AppBar(
-            title: appBarTitle,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startAddNewTransaction(context),
-              ),
-            ],
-          )
-        : CupertinoNavigationBar(
-            middle: appBarTitle,
-            backgroundColor: Theme.of(context).primaryColor,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => _startAddNewTransaction(context),
-                ),
-              ],
-            ),
-          );
+        ? buildAndroidAppBar(appBarTitle)
+        : buildCupertinoAppBar(appBarTitle);
 
     final transactionListWidget = Container(
         height: (height - appBar.preferredSize.height) * 0.7,
@@ -150,41 +201,11 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Show Chart',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Switch.adaptive(
-                    value: _showChart,
-                    activeColor: Colors.green,
-                    inactiveTrackColor: Colors.grey,
-                    onChanged: (val) {
-                      setState(() {
-                        _showChart = val;
-                      });
-                    },
-                  ),
-                ],
-              ),
+              ..._buildLandscapeContent(
+                  mediaQuery, appBar, transactionListWidget),
             if (!isLandscape)
-              Container(
-                height:
-                    (height - appBar.preferredSize.height - topPadding) * 0.3,
-                child: Chart(_recentTransactions),
-              ),
-            if (!isLandscape) transactionListWidget,
-            if (isLandscape)
-              _showChart
-                  ? Container(
-                      height:
-                          (height - appBar.preferredSize.height - topPadding) *
-                              0.7,
-                      child: Chart(_recentTransactions),
-                    )
-                  : transactionListWidget
+              ..._buildPortraitContent(
+                  mediaQuery, appBar, transactionListWidget),
           ],
         ),
       ),
